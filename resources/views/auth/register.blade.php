@@ -1,52 +1,60 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="max-w-4xl w-full mx-auto px-4 py-8">
+            <div class="text-center mb-8">
+                <h1 class="text-2xl font-semibold text-gray-900">Choose your role to register</h1>
+                <p class="mt-2 text-sm text-gray-500">Select the type of account you want to create.</p>
+            </div>
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            <div class="grid gap-6 md:grid-cols-3">
+                <!-- Student Card -->
+                <a href="{{ route('register.student.show') }}" class="group border border-gray-200 rounded-lg p-6 flex flex-col items-start justify-between hover:border-gray-300 hover:shadow-sm transition">
+                    <div>
+                        <h2 class="text-lg font-semibold text-gray-900 mb-2">Register as Student</h2>
+                        <p class="text-sm text-gray-500">Create a student account to manage your thesis and submissions.</p>
+                    </div>
+                    <span class="mt-4 inline-flex items-center text-sm font-semibold text-indigo-600 group-hover:text-indigo-700">
+                        Continue as Student
+                        <svg class="ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </span>
+                </a>
+
+                <!-- Teacher Card -->
+                <a href="{{ route('register.teacher.show') }}" class="group border border-gray-200 rounded-lg p-6 flex flex-col items-start justify-between hover:border-gray-300 hover:shadow-sm transition">
+                    <div>
+                        <h2 class="text-lg font-semibold text-gray-900 mb-2">Register as Teacher</h2>
+                        <p class="text-sm text-gray-500">Create a teacher account to supervise and evaluate theses.</p>
+                    </div>
+                    <span class="mt-4 inline-flex items-center text-sm font-semibold text-indigo-600 group-hover:text-indigo-700">
+                        Continue as Teacher
+                        <svg class="ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </span>
+                </a>
+
+                <!-- Clerk Card -->
+                <a href="{{ route('register.clerk.show') }}" class="group border border-gray-200 rounded-lg p-6 flex flex-col items-start justify-between hover:border-gray-300 hover:shadow-sm transition">
+                    <div>
+                        <h2 class="text-lg font-semibold text-gray-900 mb-2">Register as Clerk</h2>
+                        <p class="text-sm text-gray-500">Create a clerk account to manage system users and workflows.</p>
+                    </div>
+                    <span class="mt-4 inline-flex items-center text-sm font-semibold text-indigo-600 group-hover:text-indigo-700">
+                        Continue as Clerk
+                        <svg class="ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </span>
+                </a>
+            </div>
+
+            <div class="mt-8 text-center">
+                <a href="{{ route('login') }}" class="text-sm text-gray-600 hover:text-gray-900">
+                    Already registered? Log in
+                </a>
+            </div>
         </div>
-
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-    </form>
+    </div>
 </x-guest-layout>
