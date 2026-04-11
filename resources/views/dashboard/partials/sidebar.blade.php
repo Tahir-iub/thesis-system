@@ -32,6 +32,12 @@
                     <span>Categories</span>
                 </a>
             </li>
+            <li class="nav-item {{ request()->routeIs('users.index') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('users.index') }}">
+                    <i class="la la-list-alt font-size-18 me-1"></i>
+                    <span>Users</span>
+                </a>
+            </li>
 
 
             <li class="nav-item">
