@@ -16,15 +16,59 @@ class UserController extends Controller
     {
         $this->userService = $userService;
     }
-    public function index()
-    {
-        $users = $this->userService->getAllUsers();
 
-        return view('dashboard.users.index', compact('users'));
+    public function index(Request $request)
+    {
+        $isApi = $request->expectsJson() || $request->is('api/*');
+
+        $filters = [
+            'search' => $request->query('search', null),
+            'status' => $request->query('status', null),
+            'role' => $request->query('role', null),
+            'per_page' => $request->query('per_page', 10)
+        ];
+
+        // Remove empty filters
+        $filters = array_filter($filters, function ($v) {
+            return !is_null($v) && $v !== '';
+        });
+
+    $users = $this->userService->getAllUsers($filters);
+    $roles = $this->userService->getAllRoles();
+
+    if($isApi){
+        // ensure role relation available and add role_title attribute for each user
+        $users->getCollection()->transform(function ($user) {
+            $user->role_title = $user->role->title ?? null;
+            return $user;
+        });
+
+    return response()->json([
+            'status' => true,
+            'message' => 'Users retrieved successfully',
+            'data' => $users->toArray(),
+            'roles' => $roles,
+        ], 200);
     }
-    public function show($id){
+    return view('dashboard.users.index', compact('users', 'roles'));
+    }
+
+    public function show(Request $request, $id){
+        $isApi = $request->expectsJson() || $request->is('api/*');
+
         $user = $this->userService->getUserById($id);
-        return view('dashboard.users.show', compact('user'));
+
+        if($isApi){
+
+            return response()->json([
+                'status' => true,
+                'message' => 'User retrieved successfully',
+                'data' => $user
+            ], 200);
+        }
+
+
+    return view('dashboard.users.show', compact('user'));
     }
     public function create(){
         $roles = $this->userService->getAllRoles();
@@ -35,8 +79,11 @@ class UserController extends Controller
         $roles = $this->userService->getAllRoles();
         return view('dashboard.users.edit', compact('user', 'roles'));
     }
+
     public function update(UserUpdateRequest $request, $id)
     {
+        $isApi = $request->expectsJson() || $request->is('api/*');
+
         $data = $request->validated();
 
         // If password provided, hash it; otherwise remove to avoid overwriting with null
@@ -46,22 +93,38 @@ class UserController extends Controller
             unset($data['password']);
         }
 
-        $this->userService->updateUser($id, $data);
+    $this->userService->updateUser($id, $data);
+    if($isApi){
+            return response()->json([
+                'status' => true,
+                'message' => 'User updated successfully.',
+                'data' => $data
+            ], 200);
+        }
 
-        return redirect()->route('users.index')->with('success', 'User updated successfully.');
+    return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
+
 
     public function store(UserStoreRequest $request)
     {
+        $isApi = $request->expectsJson() || $request->is('api/*');
         $data = $request->validated();
         // Hash password before creating
         if (isset($data['password'])) {
             $data['password'] = bcrypt($data['password']);
         }
 
-        $this->userService->createUser($data);
+    $this->userService->createUser($data);
 
-        return redirect()->route('users.index')->with('success', 'User created successfully.');
+    if($isApi){
+            return response()->json([
+                'status'=> 'true',
+                'message'=> 'User created successfully.',
+                'data'=> $data
+            ]);
+        }
+    return redirect()->route('users.index')->with('success', 'User created successfully.');
     }
 
 }

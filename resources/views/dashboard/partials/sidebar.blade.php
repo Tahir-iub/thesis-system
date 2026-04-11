@@ -26,18 +26,42 @@
                 <hr class="sidebar-divider border-top-color" />
             </li>
             <li class="sidebar-heading">Management</li>
-            <li class="nav-item {{ request()->routeIs('#') ? 'active' : '' }}">
-                <a class="nav-link" href="#">
-                    <i class="la la-list-alt font-size-18 me-1"></i>
-                    <span>Categories</span>
-                </a>
-            </li>
-            <li class="nav-item {{ request()->routeIs('users.index') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('users.index') }}">
-                    <i class="la la-list-alt font-size-18 me-1"></i>
-                    <span>Users</span>
-                </a>
-            </li>
+
+            @auth
+                @if(auth()->user()->role_id == 1)
+                    <li class="nav-item {{ request()->routeIs('users.index') && !request('role') ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('users.index') }}">
+                            {{-- <i class="la la-user-alt font-size-18 me-1"></i> --}}
+                            <i class="fa-solid fa-users"></i>
+                            <span>Users</span>
+                        </a>
+                    </li>
+                @endif
+                 @if(auth()->user()->role_id == 2)
+                    <li class="nav-item {{ request()->routeIs('users.index') && request('role') == 3 ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('users.index', ['role' => '3']) }}">
+                            <i class="fa-solid fa-chalkboard-teacher"></i>
+                            <span>Teachers</span>
+                        </a>
+                    </li>
+                    <li class="nav-item {{ request()->routeIs('users.index') && request('role') == 4 ? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('users.index', ['role' => '4']) }}">
+                            <i class="fa-solid fa-user-graduate"></i>
+                            <span>Students</span>
+                        </a>
+                    </li>
+                @endif
+                 @if(auth()->user()->role_id == 3)
+                    <li class="nav-item {{ request()->routeIs('users.index') && request('role') == 4? 'active' : '' }}">
+                        <a class="nav-link" href="{{ route('users.index', ['role' => '4']) }}">
+                            <i class="fa-solid fa-user-graduate"></i>
+                            <span>Students</span>
+                        </a>
+                    </li>
+                @endif
+            @endauth
+
+
 
 
             <li class="nav-item">
