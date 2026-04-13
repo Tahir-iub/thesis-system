@@ -20,10 +20,8 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-    
 // Multi-role registration (web)
 Route::middleware('guest')->group(function () {
-
     // Central role selection page
     Route::get('/register', function () {
         return view('auth.register');

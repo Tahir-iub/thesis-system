@@ -6,7 +6,6 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Sanctum\PersonalAccessToken;
 
 class UserUpdateRequest extends FormRequest
 {
@@ -15,20 +14,7 @@ class UserUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if (Auth::check()) {
-            return true;
-        }
-
-        if ($this->is('api/*')) {
-            $bearer = $this->bearerToken();
-            if ($bearer) {
-                $token = PersonalAccessToken::findToken($bearer);
-                return $token && $token->tokenable ? true : false;
-            }
-            return $this->user() !== null;
-        }
-
-        return false;
+        return Auth::check();
     }
 
     /**
