@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\dashboard\UserController;
+use App\Http\Controllers\Dashboard\ThesisController;
 
 
 Route::middleware('guest')->group(function () {
@@ -59,6 +60,11 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
     Route::resource('users', UserController::class);
+    Route::resource('theses', ThesisController::class);
+    Route::get('theses/{thesis}/download', [ThesisController::class, 'download'])->name('theses.download');
+    Route::post('theses/{thesis}/approve', [ThesisController::class, 'approve'])->name('theses.approve');
+    Route::post('theses/{thesis}/reject', [ThesisController::class, 'reject'])->name('theses.reject');
+Route::post('theses/{thesis}/submit', [ThesisController::class, 'submit'])->name('theses.submit');
 
 
 

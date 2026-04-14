@@ -28,7 +28,7 @@
             <li class="sidebar-heading">Management</li>
 
             @auth
-                @if(auth()->user()->role_id == 1)
+                @if (auth()->user()->role_id == 1)
                     <li class="nav-item {{ request()->routeIs('users.index') && !request('role') ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('users.index') }}">
                             {{-- <i class="la la-user-alt font-size-18 me-1"></i> --}}
@@ -37,7 +37,7 @@
                         </a>
                     </li>
                 @endif
-                 @if(auth()->user()->role_id == 2)
+                @if (auth()->user()->role_id == 2)
                     <li class="nav-item {{ request()->routeIs('users.index') && request('role') == 3 ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('users.index', ['role' => '3']) }}">
                             <i class="fa-solid fa-chalkboard-teacher"></i>
@@ -51,8 +51,8 @@
                         </a>
                     </li>
                 @endif
-                 @if(auth()->user()->role_id == 3)
-                    <li class="nav-item {{ request()->routeIs('users.index') && request('role') == 4? 'active' : '' }}">
+                @if (auth()->user()->role_id == 3)
+                    <li class="nav-item {{ request()->routeIs('users.index') && request('role') == 4 ? 'active' : '' }}">
                         <a class="nav-link" href="{{ route('users.index', ['role' => '4']) }}">
                             <i class="fa-solid fa-user-graduate"></i>
                             <span>Students</span>
@@ -62,7 +62,12 @@
             @endauth
 
 
-
+            <li class="nav-item {{ request()->routeIs('theses.index') && !request('role') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('theses.index') }}">
+                    <i class="fa-solid fa-file-alt"></i>
+                    <span>Thesis</span>
+                </a>
+            </li>
 
             <li class="nav-item">
                 <form method="POST" action="{{ route('logout') }}" class="d-inline">
